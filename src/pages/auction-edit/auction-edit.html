@@ -1,0 +1,116 @@
+<!--
+  Generated template for the AuctionEdit page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>編輯項目</ion-title>
+    <ion-buttons ion-button end *ngIf="auctionDetail">
+      <button ion-button color="dark" (click)="editItem(auctionDetail[0].id)" [disabled]="!editItemForm.controls.name.valid || !editItemForm.controls.category_id.valid || !editItemForm.controls.target.valid || !editItemForm.controls.description.valid || !editItemForm.controls.price.valid || sandbutton==0">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+<div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="!auctionDetail"></ion-spinner></div>
+
+<div *ngIf="auctionDetail">
+  <form [formGroup]="editItemForm" novalidate>
+          
+          <ion-item>
+            <ion-label primary>名稱</ion-label>
+            <ion-input type="text"  formControlName="name"></ion-input>
+          </ion-item>
+
+          <div *ngIf="editItemForm.controls.name.hasError('required') && editItemForm.controls.name.touched">
+            <font color="red" padding-left>請輸入項目名稱</font>
+          </div>
+
+          <div *ngIf="editItemForm.controls.name.hasError('maxLength') && editItemForm.controls.name.touched">
+            <font color="red" padding-left>名稱至多100個字</font>
+          </div>
+
+          <ion-item>
+            <ion-label primary>分類</ion-label>
+            <ion-select formControlName="category_id">
+              <ion-option *ngFor="let category of categoryatas" value="{{ category.id }}">{{ category.name }}</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <div *ngIf="editItemForm.controls.category_id.hasError('required') && editItemForm.controls.category_id.touched">
+            <font color="red" padding-left>請選擇分類</font>
+        </div>
+
+        <ion-item *ngIf="selectedType==0">
+          <ion-label>全新</ion-label>
+          <ion-checkbox formControlName="new" color="secondary"></ion-checkbox>
+        </ion-item>
+
+        <ion-item *ngIf="selectedType==0">
+          <ion-label>免費</ion-label>
+          <ion-checkbox formControlName="free" color="primary" disabled='true'></ion-checkbox>
+        </ion-item>
+
+        <ion-item>
+          <ion-label primary>指定性別</ion-label>
+          <ion-select formControlName="target">
+            <ion-option value="0">全部</ion-option>
+            <ion-option value="1">男性</ion-option>
+            <ion-option value="2">女性</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf="editItemForm.controls.target.hasError('required') && editItemForm.controls.target.touched">
+            <font color="red" padding-left>請選擇指定性別</font>
+        </div>
+
+          <ion-item *ngIf="editItemForm.controls.free.value==false">
+            <ion-label primary>價格</ion-label>
+            <ion-input type="number" formControlName="price" *ngIf="auctionDetail[0].bid_count==0"></ion-input>
+            <ion-input type="number" formControlName="price" disabled='true' *ngIf="auctionDetail[0].bid_count>0"></ion-input>
+          </ion-item>
+
+          <div *ngIf="editItemForm.controls.price.hasError('notEquivalent') && editItemForm.controls.price.touched">
+            <font color="red" padding-left>請輸入價格</font>
+          </div>
+
+          <ion-item>
+            <ion-label primary floating>描述</ion-label>
+            <ion-textarea formControlName="description" rows="6"></ion-textarea>
+          </ion-item>
+
+           <div *ngIf="editItemForm.controls.description.hasError('required') && editItemForm.controls.description.touched">
+            <font color="red" padding-left>請輸入描述</font>
+          </div>
+
+          <!--<button block ion-button color="light" (click)="editItem(auctionDetail[0].id)" [disabled]="!editItemForm.controls.name.valid || !editItemForm.controls.category_id.valid || !editItemForm.controls.target.valid || !editItemForm.controls.description.valid || !editItemForm.controls.price.valid ">
+             修改
+          </button>-->
+
+        </form>
+
+<ion-grid class="smaill-pddding" *ngIf="imagedatas && imagedatas[0]">
+  <ion-row wrap>
+    
+    <ion-col width-50 *ngFor="let imgs of imagedatas" class="smaill-pddding">
+        <div class="card-background-color-white">
+          <img [src]="imgs.surl" class="itemimg" (click)="presentActionSheet(imgs.id,imgs.file_name)">  
+        </div>
+    </ion-col>
+    
+  </ion-row>
+</ion-grid>
+
+<button ion-button icon-left color="light" (click)="presentActionimageSheet()"><ion-icon name="ios-images-outline"></ion-icon>上傳圖片</button>
+
+</div>
+
+</ion-content>

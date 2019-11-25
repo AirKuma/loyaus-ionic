@@ -1,0 +1,72 @@
+<!--
+  Generated template for the Bid page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()" color="dark"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>出價</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+<ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="crescent"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+<div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="spinner==1"></ion-spinner></div>
+
+  <ion-list>
+    <ion-item-divider light *ngIf="biddatas && biddatas.length == 0">項目底價 NT${{ item_price }}</ion-item-divider>
+    
+    <div *ngFor="let bid of biddatas; let i=index">
+      <ion-item>
+        <ion-avatar item-left>
+          <img src="{{ root }}images/default/male.png" *ngIf="!bid.facebook && bid.gender==1">
+          <img src="{{ root }}images/default/female.png" *ngIf="!bid.facebook && bid.gender==0">
+          <img [src]="bid.facebook.avatar" *ngIf="bid.facebook">
+        </ion-avatar>
+        <h2>NT$ {{ bid.price }}</h2>
+        <h3>{{ bid.major }}</h3>
+      </ion-item>
+    </div>
+  </ion-list>
+
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer *ngIf="owenrId!=auth_user && end_time>now">
+  <ion-toolbar position="bottom">
+    <div *ngIf="priceCheck() && price != ''">
+           <font color="red"> {{ priceError }}</font>
+      </div>
+
+      <ion-input type="number" [(ngModel)]="price" placeholder="出價" start></ion-input>
+      <ion-buttons end>
+        <button ion-button (click)="itemBid()" color="dark" [disabled]="sandbutton==0">
+          <ion-icon name="send"></ion-icon>
+        </button>
+      </ion-buttons>
+      
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,20 @@
+<ion-list no-lines radio-group [(ngModel)]="selected">
+  <ion-item-divider color="light">選擇分類</ion-item-divider>
+
+<div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="!categoryatas[0]"></ion-spinner></div>
+
+<div *ngIf="categoryatas[0]">
+  <ion-item>
+    <ion-label>全部</ion-label>
+    <ion-radio color="dark" value="" (click)="close('')"></ion-radio>
+  </ion-item>
+  <ion-item  *ngFor="let category of categoryatas">
+    <ion-label>{{ category.name }}</ion-label>
+    <ion-radio color="dark" value="{{ category.id }}" (click)="close(category.id)"></ion-radio>
+  </ion-item>
+  <ion-item *ngIf="type=='bid'">
+    <ion-label>免費</ion-label>
+    <ion-radio color="dark" value="free" (click)="close('free')"></ion-radio>
+  </ion-item>
+</div>
+</ion-list>

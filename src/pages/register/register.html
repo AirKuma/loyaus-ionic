@@ -1,0 +1,135 @@
+<!--
+  Generated template for the Register page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>註冊</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <form [formGroup]="registerForm" (ngSubmit)="register(registerForm)" novalidate>
+
+        <ion-item>
+          <ion-label primary>電子郵件</ion-label>
+          <ion-input type="email"  formControlName="email"></ion-input>
+        </ion-item>
+        
+        <div *ngIf="registerForm.controls.email.hasError('required') && registerForm.controls.email.touched">
+          <font color="red" padding-left>請輸入你的電子郵件</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.email.hasError('emailValidator')  && registerForm.controls.email.touched">
+          <font color="red" padding-left>請確定電子郵件格式有沒有錯誤</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.email.hasError('collegeEmailValidator')  && registerForm.controls.email.touched">
+          <font color="red" padding-left>E-mail必須符合學校格式</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.email.hasError('maxlength') && registerForm.controls.email.touched">
+          <font color="red" padding-left>E-mail至多255個字</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.email.hasError('notUnique') && registerForm.controls.email.touched">
+          <font color="red" padding-left>此E-mail已經註冊過了</font>
+        </div>
+
+        <ion-item>
+            <ion-label primary>密碼</ion-label>
+            <ion-input type="password"  formControlName="password"></ion-input>
+        </ion-item>
+
+        <div *ngIf="registerForm.controls.password.hasError('required') && registerForm.controls.password.touched">
+          <font color="red" padding-left>請輸入你的密碼</font>
+        </div>
+        <div *ngIf="registerForm.controls.password.hasError('minlength') && registerForm.controls.password.touched">
+          <font color="red" padding-left>密碼至少要有6個字元</font>
+        </div>
+
+          <ion-item>
+            <ion-label primary>重輸密碼</ion-label>
+            <ion-input type="password" formControlName="password_confirmation"></ion-input>
+          </ion-item>
+        
+
+        <div *ngIf="registerForm.controls.password_confirmation.hasError('required') && registerForm.controls.password_confirmation.touched">
+          <font color="red" padding-left>請輸入你的密碼</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.password_confirmation.hasError('minlength') && registerForm.controls.password_confirmation.touched">
+          <font color="red" padding-left>密碼至少要有6個字元</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.password_confirmation.hasError('notEquivalent') && registerForm.controls.password_confirmation.touched">
+          <font color="red" padding-left>請確定你的密碼相同</font>
+        </div>
+
+        <ion-item>
+            <ion-label primary>姓氏</ion-label>
+            <ion-input type="text" formControlName="lastname" name="lastname" ></ion-input>
+        </ion-item>
+
+        <div *ngIf="registerForm.controls.lastname.hasError('required') && registerForm.controls.lastname.touched">
+          <font color="red" padding-left>請輸入你的姓氏</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.lastname.hasError('maxlength') && registerForm.controls.lastname.touched">
+          <font color="red" padding-left>姓氏至多10個字</font>
+        </div>
+
+         <ion-item>
+            <ion-label primary>姓名</ion-label>
+            <ion-input type="text" formControlName="firstname" name="firstname" ></ion-input>
+        </ion-item>
+
+        <div *ngIf="registerForm.controls.firstname.hasError('required') && registerForm.controls.firstname.touched">
+          <font color="red" padding-left>請輸入你的姓名</font>
+        </div>
+
+        <div *ngIf="registerForm.controls.firstname.hasError('maxlength') && registerForm.controls.firstname.touched">
+          <font color="red" padding-left>姓名至多10個字</font>
+        </div>
+
+      <ion-item>
+          <ion-label primary>性別</ion-label>
+          <ion-select formControlName="gender">
+            <ion-option value="1" selected="true">男性</ion-option>
+            <ion-option value="0">女性</ion-option>
+          </ion-select>
+      </ion-item>
+
+      <ion-item>
+          <ion-label primary>學系</ion-label>
+          <ion-select formControlName="major_id">
+            <ion-option *ngFor="let major of majordatas" value="{{ major.id }}">{{ major.name }}</ion-option>
+          </ion-select>
+      </ion-item>
+
+      <div *ngIf="registerForm.controls.major_id.hasError('required') && registerForm.controls.major_id.touched">
+          <font color="red" padding-left>請選擇你的學系</font>
+      </div>
+
+        <ion-item>
+          <ion-label primary>出生日期</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY" formControlName="birthday"></ion-datetime>
+        </ion-item>
+
+        <div *ngIf="registerForm.controls.birthday.hasError('required') && registerForm.controls.birthday.touched">
+          <font color="red" padding-left>請輸入你的生日</font>
+        </div>
+
+      
+        <button block ion-button color="light"  [disabled]="!registerForm.controls.lastname.valid || !registerForm.controls.firstname.valid || !registerForm.controls.email.valid || !registerForm.controls.password.valid || !registerForm.controls.password_confirmation.valid || !registerForm.controls.gender.valid || !registerForm.controls.major_id.valid || !registerForm.controls.birthday.valid">
+        確定</button>
+            
+    </form>
+
+</ion-content>

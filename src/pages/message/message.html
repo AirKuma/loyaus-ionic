@@ -1,0 +1,66 @@
+<!--
+  Generated template for the Message page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>通訊</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+<ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="crescent"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+<div *ngIf="!threaddatas[0] && spinner==0">
+    <h4 text-center>暫無通訊。</h4>
+  </div>
+
+  <div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="spinner==1"></ion-spinner></div>
+
+  <ion-list *ngIf="auth_user && threaddatas[0] && spinner==0">
+    <div *ngFor="let threaddata of threaddatas">
+
+      <ion-item [style.backgroundColor]="is_read(threaddata.read_count)" *ngIf="auth_user!=threaddata['userone']['data'][0].id" (click)="passID($event,threaddata['userone']['data'][0].id, threaddata['userone']['data'][0].firstname, threaddata['userone']['data'][0].lastname, threaddata.id)">
+        <ion-avatar item-left>
+          <img src="{{ root }}images/default/male.png" *ngIf="!threaddata['userone']['data'][0].facebook && threaddata['userone']['data'][0].gender==1 && auth_user!=threaddata['userone']['data'][0].id">
+          <img src="{{ root }}images/default/female.png" *ngIf="!threaddata['userone']['data'][0].facebook && threaddata['userone']['data'][0].gender==0 && auth_user!=threaddata['userone']['data'][0].id">
+          <img [src]="threaddata['userone']['data'][0].facebook.avatar" *ngIf="threaddata['userone']['data'][0].facebook && auth_user!=threaddata['userone']['data'][0].id">
+        </ion-avatar>
+        <h2 *ngIf="auth_user!=threaddata['userone']['data'][0].id">{{ threaddata['userone']['data'][0].lastname }} {{ threaddata['userone']['data'][0].firstname }}</h2>
+        <p>{{ threaddata['messages']['data'][0].body }}</p>
+        <ion-note item-right>{{ threaddata['messages']['data'][0].created_at }}</ion-note>
+      </ion-item>
+
+      <ion-item [style.backgroundColor]="is_read(threaddata.read_count)" *ngIf="auth_user!=threaddata['usertwo']['data'][0].id" (click)="passID($event, threaddata['usertwo']['data'][0].id, threaddata['usertwo']['data'][0].firstname, threaddata['usertwo']['data'][0].lastname, threaddata.id)">
+        <ion-avatar item-left>
+          <img src="{{ root }}images/default/male.png" *ngIf="!threaddata['usertwo']['data'][0].facebook && threaddata['usertwo']['data'][0].gender==1 && auth_user!=threaddata['usertwo']['data'][0].id">
+          <img src="{{ root }}images/default/female.png" *ngIf="!threaddata['usertwo']['data'][0].facebook && threaddata['usertwo']['data'][0].gender==0 && auth_user!=threaddata['usertwo']['data'][0].id">
+          <img [src]="threaddata['usertwo']['data'][0].facebook.avatar" *ngIf="threaddata['usertwo']['data'][0].facebook && auth_user!=threaddata['usertwo']['data'][0].id">
+        </ion-avatar>
+        <h2 *ngIf="auth_user!=threaddata['usertwo']['data'][0].id">{{ threaddata['usertwo']['data'][0].lastname }} {{ threaddata['usertwo']['data'][0].firstname }}</h2>
+        <p>{{ threaddata['messages']['data'][0].body }}</p>
+        <ion-note item-right>{{ threaddata['messages']['data'][0].created_at }}</ion-note>
+      </ion-item>
+
+    </div>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,68 @@
+<!--
+  Generated template for the AuctionContact page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()" color="dark"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>聯絡資訊</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+<div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="!contactData"></ion-spinner></div>
+
+  <div *ngIf="contactData">
+
+  <ion-item>
+          <span class="label_padding">姓名：</span>
+          <span>{{ contactData[0].lastname }} {{ contactData[0].firstname }}</span>
+  </ion-item>
+
+    <ion-item *ngIf="contactData[0].facebook">
+      Facebook：<br>
+      <div class="center">
+        <a href="https://www.facebook.com/{{ contactData[0].facebook.facebook_id }}" target="_blank">
+            {{ contactData[0].facebook.name }}<br> 
+            <img [src]="contactData[0].facebook.avatar" alt="facebook_avatar" class="center-image">
+          </a>
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="contactData[0].line_username">
+      Line：<br>
+      <div class="center">
+        <img src="http://chart.apis.google.com/chart?cht=qr&amp;chl=http://line.me/ti/p/~{{ contactData[0].line_username }}&amp;chs=200x200" alt="Line">
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="contactData[0].telegram_username">
+          <span class="label_padding">Telegram：</span>
+          <span>{{ contactData[0].telegram_username }}</span>
+    </ion-item>
+
+    <ion-item *ngIf="contactData[0].phone">
+          <span class="label_padding">連絡電話：</span>
+          <span>{{ contactData[0].phone }}</span>
+    </ion-item>
+
+    <ion-item>
+          <span class="label_padding">學校信箱：</span>
+          <span>{{ contactData[0].email }}</span>
+    </ion-item>
+
+    <ion-item *ngIf="contactData[0].other_email">
+          <span class="label_padding">其他信箱：</span>
+          <span>{{ contactData[0].other_email }}</span>
+    </ion-item>
+</div>
+
+</ion-content>

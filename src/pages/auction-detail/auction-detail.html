@@ -1,0 +1,156 @@
+<!--
+  Generated template for the AuctionDetail page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button (click)="dismiss()" color="dark"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+
+    <ion-title  *ngIf="auctionDetail">{{ auctionDetail[0].name }}</ion-title>
+
+     <ion-buttons end *ngIf="auctionDetail">
+      <button ion-button color="dark" clear (click)="presentActionSheet()">
+          <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="background-color-grey">
+
+<div *ngIf="auctionDetail && biddatas && commentdatas && error==0">
+
+  <div *ngIf="auctionDetail[0].disabled==1">
+      <h4 text-center>此項目已遭封鎖。</h4>
+  </div>
+
+  <div *ngIf="auctionDetail[0].disabled==0">
+
+    <div class="item-detail" *ngIf="auctionDetail[0].end_time<=now && ( auth_user==auctionDetail[0].user_id || auth_user==biddatas[0].id ) && auctionDetail[0].repost<=2">
+        <div *ngIf="biddatas!=''" class="contact">
+            <div *ngIf="auth_user==auctionDetail[0].user_id || auth_user==biddatas[0].id">
+                <button ion-button icon-left color="light" (click)="presentContacttModal($event)">
+                  <ion-icon name="contact"></ion-icon>
+                  聯絡資訊 
+                </button>
+
+                <button ion-button icon-left color="light" (click)="sendMessage($event)">
+                  <ion-icon name="ios-chatboxes"></ion-icon>
+                  私訊<span *ngIf="auth_user==auctionDetail[0].user_id">買家</span><span *ngIf="auth_user!=auctionDetail[0].user_id">賣家</span> 
+                </button>
+            </div>
+        </div>
+        <div *ngIf="biddatas==''">
+            <div *ngIf="auth_user==auctionDetail[0].user_id&&auctionDetail[0].repost<=2">
+                <button ion-button icon-left color="light" (click)="presentRepostConfirm()">
+                  <ion-icon name="refresh-circle"></ion-icon>
+                  重發項目
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <ion-slides *ngIf="imagedatas && imagedatas[1]" autoplay="2500" loop="true" pager="true">
+      
+      <ion-slide *ngFor="let imgs of imagedatas" class="imageheight">
+      <img [src]="imgs.murl" id="itemimg">
+      </ion-slide>
+
+    </ion-slides>
+
+      <img class="imgcenter" [src]="imagedatas[0].murl" *ngIf="imagedatas && imagedatas[0] && !imagedatas[1]">
+
+    <div class="item-detail">
+        <h2>{{ auctionDetail[0].name }}</h2>
+    
+        <button ion-button icon-left color="light" (click)="presentBidModal($event)" *ngIf="auctionDetail[0].free==0">
+          <ion-icon name="hand"></ion-icon>
+          {{ auctionDetail[0].bid_count }}
+        </button>
+        <button ion-button icon-left color="light" (click)="itemFree()" *ngIf="auctionDetail[0].free==1 && auctionDetail[0].end_time>now && auctionDetail[0].user_id!=auth_user" [disabled]="sandbutton==0">
+          <ion-icon name="hand"></ion-icon>
+          我想要
+        </button>
+
+        <button ion-button icon-left color="light" (click)="presentCommentModal($event)">
+          <ion-icon name="text"></ion-icon>
+          {{ auctionDetail[0].comment_count }}
+        </button>
+        <span *ngIf="auctionDetail[0].price" class="item_price">NT$ {{ auctionDetail[0].price }}</span>
+        <span *ngIf="!auctionDetail[0].price" class="item_price">免費</span>
+    </div>
+    <!--<ion-item text-wrap>-->
+    <div class="item-detail">
+      <ion-item text-wrap no-lines>
+        <div><ion-icon name="cart" item-left></ion-icon>型態：<span *ngIf="auctionDetail[0].type==0">拍賣</span><span *ngIf="auctionDetail[0].type==1">競投</span></div>
+        <div><ion-icon name="basket" item-left></ion-icon>分類：{{ auctionDetail[0].category.name }}</div>
+        <div><ion-icon name="md-alarm" item-left></ion-icon>剩餘時間：<span class="smalldate" attr.data-countdown="{{ auctionDetail[0].end_time}}"></span></div>
+        <div *ngIf="auctionDetail[0].type==0"><ion-icon name="star" item-left></ion-icon>項目狀態：<span *ngIf="auctionDetail[0].new==0">二手</span><span *ngIf="auctionDetail[0].new==1">全新</span></div>
+        <div><ion-icon name="information-circle" item-left></ion-icon>項目描述：</div>
+        <div class="white-space-pre-line">{{ auctionDetail[0].description }}</div>
+      </ion-item>
+      <button ion-button icon-left color="light" (click)="postfavor()">
+          <ion-icon [ngClass]="setFavorClass()" name="{{ favoricon }}"></ion-icon>
+          喜歡 {{ auctionDetail[0].favor_count }}
+      </button>
+    </div>
+
+    <div class="item-detail">
+      <!--<button ion-button full color="light">留言</button>-->
+      <ion-list>
+        <ion-item-divider light (click)="presentCommentModal($event)" >留言<ion-badge class="badge">{{ auctionDetail[0].comment_count }}</ion-badge><ion-icon class="arrowicon" name="arrow-forward"></ion-icon></ion-item-divider>
+        
+        <div *ngFor="let comment of commentdatas; let i=index">
+          <ion-item *ngIf="i<2">
+            <ion-avatar item-left>
+              <img src="{{ root }}images/default/male.png" *ngIf="(!comment.facebook || comment.user.id==auctionDetail[0].user_id) && comment.user.gender==1">
+              <img src="{{ root }}images/default/female.png" *ngIf="(!comment.facebook || comment.user.id==auctionDetail[0].user_id) && comment.user.gender==0">
+              <img [src]="comment.facebook.avatar" *ngIf="comment.facebook && comment.user.id!=auctionDetail[0].user_id">
+            </ion-avatar>
+            <h2 *ngIf="comment.user.id!=auctionDetail[0].user_id">{{ comment.user.lastname }} {{ comment.user.firstname }}</h2>
+            <h2 *ngIf="comment.user.id==auctionDetail[0].user_id">賣家</h2>
+            <h3 class="white-space-pre-line" *ngIf="comment.status==0">{{ comment.content }}</h3>
+            <h3 *ngIf="comment.status==1">此留言已遭封鎖</h3>
+            <p>{{ comment.created_at }}</p>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
+
+    <div class="item-detail" *ngIf="auctionDetail[0].free==0">
+      <ion-list>
+        <ion-item-divider light (click)="presentBidModal($event)" >出價紀錄<ion-badge class="badge">{{ auctionDetail[0].bid_count }}</ion-badge><ion-icon class="arrowicon" name="arrow-forward"></ion-icon></ion-item-divider>
+        
+        <div *ngFor="let bid of biddatas; let i=index">
+          <ion-item *ngIf="i<2">
+            <ion-avatar item-left>
+              <img src="{{ root }}images/default/male.png" *ngIf="!bid.facebook && bid.gender==1">
+              <img src="{{ root }}images/default/female.png" *ngIf="!bid.facebook && bid.gender==0">
+              <img [src]="bid.facebook.avatar" *ngIf="bid.facebook">
+            </ion-avatar>
+            <h2>NT$ {{ bid.price }}</h2>
+            <h3>{{ bid.major }}</h3>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="error==1">
+  <h4 text-center>此項目不見了！</h4>
+</div>
+
+<div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="!imagedatas && error!=1"></ion-spinner></div>
+
+</ion-content>
+
+

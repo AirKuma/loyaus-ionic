@@ -1,0 +1,70 @@
+page-profile {
+
+    .center-image{
+        margin:0 auto;
+        max-width: 80px !important;
+        max-height: 80px !important;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .icons {
+        background-color: #fff;
+        border: 1px solid #7f8c8d;
+        color: #7f8c8d;
+        margin: 0;
+        font-size: 0.9em;
+    }
+    
+    .name {
+        margin: 0;
+        word-break: break-all;
+    }
+    
+    .smaill-pddding{
+        padding: 2px;
+    }
+
+    .itempadding{
+        padding: 5px 2px 8px 2px;
+    }
+
+    .limit{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+    }
+    .iconcolor{
+        color:red;
+    }
+
+    div.spinner {
+        text-align: center;
+    }
+    .itemspinner{
+        width: 50px !important;
+        height: 50px !important;
+        vertical-align: middle;
+        margin-top:50px;
+    }
+
+    .background-color-grey {
+        background-color: #F7F7F7;
+    }
+    .card-background-color-white {
+        background-color: #FFFFFF;
+    }
+
+    .segment-ios-dark .segment-button{
+        border-color: #c3c3c3;
+    }
+
+    .segment-ios-dark .segment-button.segment-activated{
+        color: #000;
+    background-color: #d0d0d0;
+    }
+
+    .smalldate{
+        font-size: 12px;
+    }
+
+}

@@ -1,0 +1,72 @@
+<!--
+  Generated template for the Comment page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()" color="dark"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>留言</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="crescent"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+<div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="spinner==1"></ion-spinner></div>
+
+  <ion-list>
+    
+    <div *ngFor="let comment of commentdatas">
+      <ion-item (click)="presentActionSheet(comment.user.id,comment)">
+        <ion-avatar item-left>
+          <img src="{{ root }}images/default/male.png" *ngIf="(!comment.facebook || comment.user.id==owenrId) && comment.user.gender==1">
+          <img src="{{ root }}images/default/female.png" *ngIf="(!comment.facebook || comment.user.id==owenrId) && comment.user.gender==0">
+          <img [src]="comment.facebook.avatar" *ngIf="comment.facebook && comment.user.id!=owenrId">
+        </ion-avatar>
+        <h2 *ngIf="comment.user.id!=owenrId">{{ comment.user.lastname }} {{ comment.user.firstname }}</h2>
+        <h2 *ngIf="comment.user.id==owenrId">賣家</h2>
+        <h3 class="white-space-pre-line" *ngIf="comment.status==0">{{ comment.content }}</h3>
+        <h3 *ngIf="comment.status==1">此留言已遭封鎖</h3>
+        <p>{{ comment.created_at }}</p>
+
+
+      </ion-item>
+    </div>
+
+  </ion-list>
+
+<ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar position="bottom">
+      <ion-textarea [(ngModel)]="content" placeholder="留言" start></ion-textarea>
+      <ion-buttons end>
+        <button ion-button (click)="itemComment()" color="dark" [disabled]="sandbutton==0">
+          <ion-icon name="send"></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,48 @@
+page-auction {
+
+.limit{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+    }
+    .iconcolor{
+        color:red;
+    }
+    .itempadding{
+        padding: 5px 2px 8px 2px;
+    }
+    .smaill-pddding{
+        padding: 2px;
+    }
+
+    div.spinner {
+        text-align: center;
+    }
+    .itemspinner{
+        width: 50px !important;
+        height: 50px !important;
+        vertical-align: middle;
+        margin-top:50px;
+    }
+
+    .background-color-grey {
+        background-color: #F7F7F7;
+    }
+    .card-background-color-white {
+        background-color: #FFFFFF;
+    }
+
+    .segment-ios-dark .segment-button{
+        border-color: #c3c3c3;
+        //border-color: #8a8a8a;
+    }
+
+    .segment-ios-dark .segment-button.segment-activated{
+        color: #000;
+        background-color: #d0d0d0;
+        //background-color: #ffffff;
+    }
+    .smalldate{
+        font-size: 12px;
+    }
+}

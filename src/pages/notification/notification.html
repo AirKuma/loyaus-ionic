@@ -1,0 +1,55 @@
+<!--
+  Generated template for the Notification page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>通知</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+<ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="crescent"
+            refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="!notificationdatas[0] && spinner==0">
+    <h4 text-center>暫無通知。</h4>
+</div>
+
+<div class="spinner"><ion-spinner name="crescent" class="itemspinner" *ngIf="spinner==1"></ion-spinner></div>
+
+<ion-list *ngIf="notificationdatas[0] && spinner==0">
+  <div *ngFor="let notification of notificationdatas" (click)="passpage($event, notification.notificatable_id)">
+  <ion-item text-wrap *ngIf="notification.is_read==1" class="read_1">
+      <h2><span *ngIf="notification.sender.id!=1">{{ notification.sender.lastname }} {{ notification.sender.firstname }}</span>{{ notification.content }}</h2>
+      <p>{{ notification.created_at }}</p>
+  </ion-item>
+
+  <ion-item text-wrap *ngIf="notification.is_read==0" class="read_0">
+      <h2><span *ngIf="notification.sender.id!=1">{{ notification.sender.lastname }} {{ notification.sender.firstname }}</span>{{ notification.content }}</h2>
+      <p>{{ notification.created_at }}</p>
+  </ion-item>
+  
+  </div>
+</ion-list>
+
+<ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
